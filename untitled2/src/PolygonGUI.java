@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
+/*
  * 正多边形GUI展示程序
  */
 public class PolygonGUI extends JFrame {
