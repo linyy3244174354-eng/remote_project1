@@ -3,7 +3,7 @@ import java.math.RoundingMode;
 import java.util.Scanner;
 
 /**
- * 10边星形类（十角星），计算周长和面积
+ * 10边星形类（十角星），计算 周长和面积
  */
 public class DecagonStar {
     private double radius; // 外接圆半径

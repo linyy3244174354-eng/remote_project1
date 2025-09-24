@@ -41,7 +41,7 @@ public class Sector {
     /**
      * 计算扇形面积
      * 公式：(圆心角/360) × πr²
-     * @return 面积，保留两位小数
+     * @return 面积，  保留两位小数
      */
     public double calculateArea() {
         double area = (angle / 360) * Math.PI * Math.pow(radius, 2);

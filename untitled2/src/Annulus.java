@@ -3,7 +3,7 @@ import java.math.RoundingMode;
 import java.util.Scanner;
 
 /**
- * 圆环类，计算圆环的周长和面积
+ * 圆环类，计 算 圆环的周长和面积
  */
 public class Annulus {
     private double innerRadius; // 内半径

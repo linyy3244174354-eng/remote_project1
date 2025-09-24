@@ -3,7 +3,7 @@ import java.math.RoundingMode;
 import java.util.Scanner;
 
 /**
- * 椭圆类，计算椭圆的周长和面积
+ * 椭圆类，计算椭圆的周长和 面积
  */
 public class Ellipse {
     private double semiMajorAxis; // 长半轴
