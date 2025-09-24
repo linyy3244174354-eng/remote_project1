@@ -2,7 +2,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Scanner;
 
-/**
+/*
  * 10边星形类（十角星），计算 周长和面积
  */
 public class DecagonStar {
