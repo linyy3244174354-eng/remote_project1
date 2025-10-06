@@ -1,115 +1,39 @@
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Scanner;
-
 /**
- * 长方形 （或正方形）周长面积求解
+ * 长方形类
+ * 第2天任务：实现长方形的周长和面积计算
  */
-public class Rectangle {
+public class Rectangle extends Shape {
     private double length;
     private double width;
-    private String shapeType;
 
-    // 构造方法，初始化长和宽
     public Rectangle(double length, double width) {
+        if (length <= 0 || width <= 0) {
+            throw new IllegalArgumentException("长和宽必须大于0");
+        }
         this.length = length;
         this.width = width;
-        this.shapeType = determineShape();
+        this.shapeName = "长方形";
     }
 
-    // 判断是长方形还是正方形
-    public String determineShape() {
-        // 考虑浮点数精度问题，使用微小误差范围进行比较
-        if (Math.abs(length - width) < 0.0001) {
-            return "正方形";
-        } else {
-            return "长方形";
-        }
-    }
-
-    // 计算周长
+    @Override
     public double calculatePerimeter() {
-        double perimeter = 2 * (length + width);
-        // 保留两位小数
-        return new BigDecimal(perimeter).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        return round(2 * (length + width));
     }
 
-    // 计算面积
+    @Override
     public double calculateArea() {
-        double area = length * width;
-        // 保留两位小数
-        return new BigDecimal(area).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        return round(length * width);
     }
 
-    // 打印图形
-    public void printShape() {
-        // 为了适合控制台显示，将尺寸转换为字符数（限制最大宽度和高度）
-        int displayWidth = (int)Math.min(width, 20);  // 最大宽度20个字符
-        int displayHeight = (int)Math.min(length, 10); // 最大高度10个字符
-
-        System.out.println("\n图形预览:");
-
-        // 打印顶部边框和宽度标注
-        printHorizontalLine(displayWidth, "上", width);
-
-        // 打印中间部分
-        for (int i = 0; i < displayHeight - 2; i++) {
-            System.out.print("|");
-            for (int j = 0; j < displayWidth - 2; j++) {
-                System.out.print(" ");
-            }
-            System.out.println("|");
-        }
-
-        // 打印底部边框
-        if (displayHeight > 1) {
-            printHorizontalLine(displayWidth, "下", width);
-        }
-
-        // 打印右侧长度标注（针对高度）
-        System.out.printf("高: %.2f\n", length);
+    // 判断是否为正方形
+    public boolean isSquare() {
+        return Math.abs(length - width) < 0.0001;
     }
 
-    // 打印水平线并标注宽度
-    private void printHorizontalLine(int displayWidth, String position, double actualWidth) {
-        System.out.print("+");
-        for (int j = 0; j < displayWidth - 2; j++) {
-            System.out.print("-");
-        }
-        System.out.printf("+%s宽: %.2f\n", position, actualWidth);
-    }
-
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        try {
-            // 获取用户输入
-            System.out.print("请输入长度: ");
-            double length = scanner.nextDouble();
-
-            System.out.print("请输入宽度: ");
-            double width = scanner.nextDouble();
-
-            // 验证输入是否为正数
-            if (length <= 0 || width <= 0) {
-                System.out.println("错误: 长度和宽度必须为正数!");
-                return;
-            }
-
-            // 创建计算器实例
-            Rectangle printer = new Rectangle(length, width);
-
-            // 计算并显示结果
-            System.out.println("\n判断结果: 这是一个" + printer.shapeType);
-            System.out.println("周长: " + printer.calculatePerimeter());
-            System.out.println("面积: " + printer.calculateArea());
-
-            // 打印图形
-            printer.printShape();
-        } catch (Exception e) {
-            System.out.println("输入错误: 请输入有效的数字!");
-        } finally {
-            scanner.close();
-        }
+    @Override
+    public String getInfo() {
+        String type = isSquare() ? "正方形" : "长方形";
+        return String.format("%s - 长: %.2f, 宽: %.2f, 周长: %.2f, 面积: %.2f",
+                type, length, width, calculatePerimeter(), calculateArea());
     }
 }
