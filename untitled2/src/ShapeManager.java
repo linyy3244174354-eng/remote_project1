@@ -1,68 +1,88 @@
-/**
- * 图形管理器类
- * 第13天任务：管理多个图形，提供统计功能
- */
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+/**
+ * 图形管理器，负责存储、统计所有图形
+ */
 public class ShapeManager {
-    private List<Shape> shapes;
+    private List<Shape> shapeList; // 存储所有图形的列表
 
     public ShapeManager() {
-        shapes = new ArrayList<>();
+        shapeList = new ArrayList<>();
     }
 
-    // 添加图形
+    /**
+     * 添加图形到管理器
+     * @param shape 要添加的图形
+     */
     public void addShape(Shape shape) {
         if (shape != null) {
-            shapes.add(shape);
+            shapeList.add(shape);
         }
     }
 
-    // 移除图形
-    public boolean removeShape(Shape shape) {
-        return shapes.remove(shape);
-    }
-
-    // 获取所有图形
+    /**
+     * 获取所有图形
+     * @return 图形列表
+     */
     public List<Shape> getAllShapes() {
-        return new ArrayList<>(shapes); // 返回副本，防止外部修改
+        return new ArrayList<>(shapeList); // 返回副本，避免外部修改
     }
 
-    // 计算所有图形的总周长
-    public double getTotalPerimeter() {
-        double total = 0;
-        for (Shape shape : shapes) {
-            total += shape.calculatePerimeter();
-        }
-        return new java.math.BigDecimal(total)
-                .setScale(2, java.math.RoundingMode.HALF_UP)
-                .doubleValue();
-    }
-
-    // 计算所有图形的总面积
-    public double getTotalArea() {
-        double total = 0;
-        for (Shape shape : shapes) {
-            total += shape.calculateArea();
-        }
-        return new java.math.BigDecimal(total)
-                .setScale(2, java.math.RoundingMode.HALF_UP)
-                .doubleValue();
-    }
-
-    // 按图形类型统计数量
-    public String getShapeCountStatistics() {
-        java.util.Map<String, Integer> countMap = new java.util.HashMap<>();
-
-        for (Shape shape : shapes) {
-            String name = shape.getShapeName();
+    /**
+     * 统计每种图形的数量
+     * @return 键：图形名称，值：数量
+     */
+    public Map<String, Integer> getShapeCount() {
+        Map<String, Integer> countMap = new HashMap<>();
+        for (Shape shape : shapeList) {
+            String name = shape.getName();
             countMap.put(name, countMap.getOrDefault(name, 0) + 1);
         }
+        return countMap;
+    }
 
-        StringBuilder sb = new StringBuilder("图形数量统计:\n");
-        for (java.util.Map.Entry<String, Integer> entry : countMap.entrySet()) {
-            sb.append(entry.getKey()).append(": ").append(entry.getValue()).append("个\n");
+    /**
+     * 获取所有图形的总周长
+     * @return 总周长（保留2位小数）
+     */
+    public double getTotalPerimeter() {
+        double total = 0;
+        for (Shape shape : shapeList) {
+            total += shape.calculatePerimeter();
+        }
+        return new BigDecimal(total).setScale(2, RoundingMode.HALF_UP).doubleValue();
+    }
+
+    /**
+     * 获取所有图形的总面积
+     * @return 总面积（保留2位小数）
+     */
+    public double getTotalArea() {
+        double total = 0;
+        for (Shape shape : shapeList) {
+            total += shape.calculateArea();
+        }
+        return new BigDecimal(total).setScale(2, RoundingMode.HALF_UP).doubleValue();
+    }
+
+    /**
+     * 生成统计信息字符串
+     * @return 格式化的统计信息
+     */
+    public String getShapeCountStatistics() {
+        Map<String, Integer> countMap = getShapeCount();
+        StringBuilder sb = new StringBuilder("图形类型统计:\n");
+        if (countMap.isEmpty()) {
+            sb.append("  暂无图形数据\n");
+            return sb.toString();
+        }
+        for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
+            sb.append(String.format("  - %s: %d个\n", entry.getKey(), entry.getValue()));
         }
         return sb.toString();
     }

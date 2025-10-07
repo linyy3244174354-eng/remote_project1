@@ -1,18 +1,22 @@
 /**
- * 长方形类
- * 第2天任务：实现长方形的周长和面积计算
+ * 长方形类（参数：长、宽）
  */
 public class Rectangle extends Shape {
-    private double length;
-    private double width;
+    private double length; // 长
+    private double width;  // 宽
 
+    /**
+     * 构造方法（校验参数有效性）
+     * @param length 长（必须>0）
+     * @param width  宽（必须>0）
+     */
     public Rectangle(double length, double width) {
         if (length <= 0 || width <= 0) {
             throw new IllegalArgumentException("长和宽必须大于0");
         }
         this.length = length;
         this.width = width;
-        this.shapeName = "长方形";
+        this.name = "长方形";
     }
 
     @Override
@@ -25,15 +29,18 @@ public class Rectangle extends Shape {
         return round(length * width);
     }
 
-    // 判断是否为正方形
-    public boolean isSquare() {
-        return Math.abs(length - width) < 0.0001;
-    }
-
     @Override
     public String getInfo() {
-        String type = isSquare() ? "正方形" : "长方形";
         return String.format("%s - 长: %.2f, 宽: %.2f, 周长: %.2f, 面积: %.2f",
-                type, length, width, calculatePerimeter(), calculateArea());
+                name, length, width, calculatePerimeter(), calculateArea());
+    }
+
+    // Getter（供外部访问参数）
+    public double getLength() {
+        return length;
+    }
+
+    public double getWidth() {
+        return width;
     }
 }

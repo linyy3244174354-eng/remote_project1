@@ -1,46 +1,66 @@
 /**
- * 椭圆类
- * 第9天任务：实现椭圆的周长和面积计算
+ * 椭圆类（参数：长半轴、短半轴）
+ * 周长使用拉马努金近似公式（精度高，适合实际计算），面积使用标准公式
  */
 public class Ellipse extends Shape {
-    private double semiMajorAxis; // 长半轴
-    private double semiMinorAxis; // 短半轴
+    private double semiMajorAxis; // 长半轴（a，必须 ≥ 短半轴）
+    private double semiMinorAxis; // 短半轴（b）
 
+    /**
+     * 构造方法：校验长/短半轴有效性
+     * @param semiMajorAxis 长半轴（>0）
+     * @param semiMinorAxis 短半轴（>0，且 ≤ 长半轴）
+     */
     public Ellipse(double semiMajorAxis, double semiMinorAxis) {
         if (semiMajorAxis <= 0 || semiMinorAxis <= 0) {
-            throw new IllegalArgumentException("半轴长度必须大于0");
+            throw new IllegalArgumentException("长半轴和短半轴必须大于0");
         }
-        // 确保长半轴大于等于短半轴
         if (semiMajorAxis < semiMinorAxis) {
-            double temp = semiMajorAxis;
-            semiMajorAxis = semiMinorAxis;
-            semiMinorAxis = temp;
+            throw new IllegalArgumentException("长半轴必须大于或等于短半轴");
         }
         this.semiMajorAxis = semiMajorAxis;
         this.semiMinorAxis = semiMinorAxis;
-        this.shapeName = "椭圆";
+        this.name = "椭圆";
     }
 
+    /**
+     * 计算周长：拉马努金近似公式（精度优于传统近似）
+     * 公式：P ≈ π[3(a+b) - √((3a+b)(a+3b))]
+     */
     @Override
     public double calculatePerimeter() {
-        // 使用Ramanujan近似公式计算椭圆周长
         double a = semiMajorAxis;
         double b = semiMinorAxis;
-        double h = Math.pow((a - b), 2) / Math.pow((a + b), 2);
-
-        double perimeter = Math.PI * (a + b) * (1 + 3 * h / (10 + Math.sqrt(4 - 3 * h)));
+        double part1 = 3 * (a + b);
+        double part2 = Math.sqrt((3 * a + b) * (a + 3 * b));
+        double perimeter = Math.PI * (part1 - part2);
         return round(perimeter);
     }
 
+    /**
+     * 计算面积：标准公式（椭圆面积=πab）
+     */
     @Override
     public double calculateArea() {
-        // 椭圆面积公式: π × a × b
-        return round(Math.PI * semiMajorAxis * semiMinorAxis);
+        double area = Math.PI * semiMajorAxis * semiMinorAxis;
+        return round(area);
     }
 
+    /**
+     * 输出椭圆完整信息（参数+周长+面积）
+     */
     @Override
     public String getInfo() {
         return String.format("%s - 长半轴: %.2f, 短半轴: %.2f, 周长: %.2f, 面积: %.2f",
-                shapeName, semiMajorAxis, semiMinorAxis, calculatePerimeter(), calculateArea());
+                name, semiMajorAxis, semiMinorAxis, calculatePerimeter(), calculateArea());
+    }
+
+    // Getter方法（供外部访问参数）
+    public double getSemiMajorAxis() {
+        return semiMajorAxis;
+    }
+
+    public double getSemiMinorAxis() {
+        return semiMinorAxis;
     }
 }
